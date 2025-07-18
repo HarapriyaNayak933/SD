@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Java Quiz</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 30px;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+    .question {
+      background: #1c1c1c;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    }
+    .question h3 {
+      margin: 0 0 10px 0;
+    }
+    .options label {
+      display: block;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+    button {
+      padding: 12px 25px;
+      font-size: 1rem;
+      background-color: #00adb5;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #007c85;
+    }
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #222;
+      padding: 40px;
+      color: white;
+      border-radius: 12px;
+      display: none;
+      z-index: 10;
+    }
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      z-index: 9;
+    }
+    #timer {
+      text-align: right;
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay" id="overlay"></div>
+  <div class="popup" id="popup">
+    <h2>Basic Level Completed!</h2>
+    <p>Ready for Intermediate Level?</p>
+    <button onclick="loadIntermediate()">Yes, Let's Go!</button>
+  </div>
+
+  <div class="container">
+    <h1>Java Quiz</h1>
+    <div id="timer">Time Left: <span id="time">15:00</span></div>
+    <form id="quiz-form"></form>
+    <button onclick="submitQuiz()">Submit Quiz</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const basicQuestions = [
+      { q: "What is the difference between == and .equals()?", options: ["Both compare memory addresses", "== compares values, .equals() compares references", "== compares references, .equals() compares values", "Both are the same"], answer: 2 },
+      { q: "Which of the following is NOT a principle of OOP?", options: ["Inheritance", "Compilation", "Encapsulation", "Polymorphism"], answer: 1 },
+      { q: "What is a constructor in Java?", options: ["A method that initializes the JVM", "A static method that returns object", "A method that initializes objects", "A method that destroys objects"], answer: 2 },
+      { q: "What does the static keyword in Java indicate?", options: ["The method can’t be accessed", "The method belongs to the class", "The method is executed only once", "It makes a method final"], answer: 1 },
+      { q: "What is the main advantage of ArrayList over arrays?", options: ["Stores primitive data", "Fixed size", "Dynamic size", "Faster than array"], answer: 2 },
+      { q: "What does the final keyword mean in Java?", options: ["Variable can’t be initialized", "Variable can’t be changed", "Variable is invisible", "Variable is optional"], answer: 1 },
+      { q: "What is the purpose of garbage collection in Java?", options: ["To manually delete variables", "To collect unused objects", "To format memory", "To delete files"], answer: 1 }
+    ];
+
+    const intermediateQuestions = [
+      { q: "Which data structure is used by HashMap internally?", options: ["ArrayList", "TreeSet", "Hash table", "LinkedList"], answer: 2 },
+      { q: "Which of the following allows sorted elements in ascending order?", options: ["HashSet", "LinkedHashSet", "TreeSet", "ArrayList"], answer: 2 },
+      { q: "What is the use of Comparator in Java?", options: ["To check type safety", "To compare strings only", "To compare objects with custom logic", "To sort arrays only"], answer: 2 },
+      { q: "Which of these is a checked exception?", options: ["ArithmeticException", "NullPointerException", "IOException", "ArrayIndexOutOfBoundsException"], answer: 2 },
+      { q: "What is the output of indexOf() in 'java'?", options: ["1", "2", "3", "-1"], answer: 1 },
+      { q: "What is a shallow copy in Java?", options: ["Clones object completely", "Copies only primitive data", "Copies references only", "Deep copy with memory sharing"], answer: 2 },
+      { q: "Which class is used to write data to a file in Java?", options: ["File", "Scanner", "FileWriter", "StringWriter"], answer: 2 }
+    ];
+
+    const advancedQuestions = [
+      { q: "What is the initial state of a newly created thread?", options: ["Running", "Waiting", "Ready", "New"], answer: 3 },
+      { q: "What does synchronized do in Java?", options: ["Runs thread in background", "Ensures only one thread accesses a block", "Speeds up thread", "Makes method final"], answer: 1 },
+      { q: "Which concept is best suited for payment gateway system?", options: ["Inheritance", "Interface", "Static class", "Local class"], answer: 1 },
+      { q: "Which tool is used to find memory leaks in Java?", options: ["Debugger", "VisualVM", "Notepad++", "Logcat"], answer: 1 },
+      { q: "In Producer-Consumer, what is used for thread communication?", options: ["this", "notify(), wait()", "main()", "System.out"], answer: 1 },
+      { q: "Which class would you use to implement an LRU cache?", options: ["ArrayList", "TreeMap", "HashMap", "LinkedHashMap"], answer: 3 }
+    ];
+
+    let currentSet = basicQuestions;
+    let currentLevel = "basic";
+
+    function loadQuestions() {
+      const form = document.getElementById("quiz-form");
+      form.innerHTML = "";
+      currentSet.forEach((item, i) => {
+        let html = `<div class='question'><h3>Q${i + 1}: ${item.q}</h3>`;
+        item.options.forEach((opt, j) => {
+          html += `<div class='options'><label><input type='radio' name='q${i}' value='${j}'> ${opt}</label></div>`;
+        });
+        html += `</div>`;
+        form.innerHTML += html;
+      });
+    }
+
+    function submitQuiz() {
+      let correct = 0;
+      const form = document.getElementById("quiz-form");
+      currentSet.forEach((q, i) => {
+        const answer = form[`q${i}`].value;
+        if (parseInt(answer) === q.answer) correct++;
+      });
+      document.getElementById("result").innerHTML = `<h2>Score: ${correct}/${currentSet.length}</h2>`;
+
+      if (currentLevel === "basic") {
+        document.getElementById("overlay").style.display = "block";
+        document.getElementById("popup").style.display = "block";
+      }
+    }
+
+    function loadIntermediate() {
+      currentSet = intermediateQuestions;
+      currentLevel = "intermediate";
+      document.getElementById("overlay").style.display = "none";
+      document.getElementById("popup").style.display = "none";
+      loadQuestions();
+      document.getElementById("result").innerHTML = "";
+    }
+
+    // Timer
+    let totalTime = 15 * 60;
+    const timerInterval = setInterval(() => {
+      if (totalTime <= 0) {
+        clearInterval(timerInterval);
+        alert("Time's up! Submitting your quiz.");
+        submitQuiz();
+      } else {
+        totalTime--;
+        let minutes = Math.floor(totalTime / 60);
+        let seconds = totalTime % 60;
+        document.getElementById("time").textContent = `${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
+      }
+    }, 1000);
+
+    window.onload = loadQuestions;
+  </script>
+</body>
+</html>
