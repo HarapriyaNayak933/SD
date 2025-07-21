@@ -3,183 +3,313 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Java Quiz</title>
+  <title>Java Quiz - BG Career</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-      color: white;
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
     }
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 30px;
+    body {
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .logo-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .logo-container img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      transition: transform 0.3s ease;
+    }
+    .logo-container img:hover {
+      transform: scale(1.05);
+    }
+    .logo-container span {
+      margin-top: 6px;
+      font-size: 16px;
+      color: #ffffff;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
     }
     h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
       text-align: center;
-      font-size: 2.5rem;
-      margin-bottom: 20px;
     }
-    .question {
-      background: #1c1c1c;
-      border-radius: 12px;
+    #quiz-container {
+      width: 100%;
+      max-width: 600px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .question-set {
+      display: none;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
       padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      text-align: center;
     }
-    .question h3 {
-      margin: 0 0 10px 0;
+    .question-set.active {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-    .options label {
+    .question-set p {
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+    .question-set label {
       display: block;
-      margin-bottom: 8px;
+      width: 100%;
+      max-width: 500px;
+      margin: 8px auto;
       cursor: pointer;
+      text-align: left;
+      background: rgba(255,255,255,0.1);
+      padding: 10px;
+      border-radius: 6px;
+      transition: background-color 0.2s;
+    }
+    .question-set label:hover {
+      background-color: rgba(255,255,255,0.2);
     }
     button {
-      padding: 12px 25px;
-      font-size: 1rem;
-      background-color: #00adb5;
-      color: white;
+      padding: 10px 20px;
+      background-color: #1abc9c;
       border: none;
-      border-radius: 8px;
+      color: white;
+      font-size: 16px;
       cursor: pointer;
+      border-radius: 8px;
+      margin-top: 10px;
     }
     button:hover {
-      background-color: #007c85;
-    }
-    .popup {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: #222;
-      padding: 40px;
-      color: white;
-      border-radius: 12px;
-      display: none;
-      z-index: 10;
-    }
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      display: none;
-      z-index: 9;
+      background-color: #16a085;
     }
     #timer {
-      text-align: right;
-      font-size: 1.2rem;
+      font-size: 18px;
       margin-bottom: 20px;
+      font-weight: bold;
+      color: #ffcc00;
+      text-align: center;
+    }
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
+      .question-set p {
+        font-size: 16px;
+      }
+      .question-set label {
+        font-size: 14px;
+      }
+      button {
+        width: 100%;
+        max-width: 300px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="overlay" id="overlay"></div>
-  <div class="popup" id="popup">
-    <h2>Basic Level Completed!</h2>
-    <p>Ready for Intermediate Level?</p>
-    <button onclick="loadIntermediate()">Yes, Let's Go!</button>
+  <div class="logo-container">
+    <img src="WhatsApp Image 2025-07-18 at 18.38.39_2f122030.jpg" alt="BG Career Logo" />
+    <span>Technical Department</span>
   </div>
-
-  <div class="container">
-    <h1>Java Quiz</h1>
-    <div id="timer">Time Left: <span id="time">15:00</span></div>
-    <form id="quiz-form"></form>
-    <button onclick="submitQuiz()">Submit Quiz</button>
-    <div id="result"></div>
+  <h1>Java Quiz - BG Career</h1>
+  <div id="timer">Time Left: 15:00</div>
+  <div id="quiz-container"></div>
+  <div id="result" class="question-set">
+    <h2>Your Score: <span id="score"></span>/20</h2>
   </div>
-
   <script>
-    const basicQuestions = [
-      { q: "What is the difference between == and .equals()?", options: ["Both compare memory addresses", "== compares values, .equals() compares references", "== compares references, .equals() compares values", "Both are the same"], answer: 2 },
-      { q: "Which of the following is NOT a principle of OOP?", options: ["Inheritance", "Compilation", "Encapsulation", "Polymorphism"], answer: 1 },
-      { q: "What is a constructor in Java?", options: ["A method that initializes the JVM", "A static method that returns object", "A method that initializes objects", "A method that destroys objects"], answer: 2 },
-      { q: "What does the static keyword in Java indicate?", options: ["The method can’t be accessed", "The method belongs to the class", "The method is executed only once", "It makes a method final"], answer: 1 },
-      { q: "What is the main advantage of ArrayList over arrays?", options: ["Stores primitive data", "Fixed size", "Dynamic size", "Faster than array"], answer: 2 },
-      { q: "What does the final keyword mean in Java?", options: ["Variable can’t be initialized", "Variable can’t be changed", "Variable is invisible", "Variable is optional"], answer: 1 },
-      { q: "What is the purpose of garbage collection in Java?", options: ["To manually delete variables", "To collect unused objects", "To format memory", "To delete files"], answer: 1 }
-    ];
+    const questions = [{
+      q: "What will be the output of the following Java code?\nint x = 5;\nSystem.out.println(x++ + ++x);",
+      options: ["11", "12", "13", "14"],
+      answer: 2
+    },
+    {
+      q: "Which data structure does HashMap implement internally?",
+      options: ["Array", "LinkedList", "Hash table", "Binary Tree"],
+      answer: 2
+    },
+    {
+      q: "Which keyword is used for inheritance in Java?",
+      options: ["inherits", "extends", "implements", "this"],
+      answer: 1
+    },
+    {
+      q: "What is the default value of a local variable in Java?",
+      options: ["null", "0", "depends on data type", "No default value"],
+      answer: 3
+    },
+    {
+      q: "Which exception is thrown when dividing by zero in Java?",
+      options: ["NullPointerException", "IOException", "ArithmeticException", "IndexOutOfBoundsException"],
+      answer: 2
+    },
+    {
+      q: "What is the output?\nString s = \"Hello\";\nSystem.out.println(s.charAt(1));",
+      options: ["H", "e", "l", "o"],
+      answer: 1
+    },
+    {
+      q: "Which collection class allows you to access elements by key?",
+      options: ["ArrayList", "TreeSet", "HashMap", "LinkedList"],
+      answer: 2
+    },
+    {
+      q: "What is the time complexity to retrieve a value in HashMap?",
+      options: ["O(n)", "O(log n)", "O(1)", "O(n log n)"],
+      answer: 2
+    },
+    {
+      q: "Which of the following is not a feature of Java?",
+      options: ["Object-oriented", "Portable", "Supports Pointers", "Platform independent"],
+      answer: 2
+    },
+    {
+      q: "What does JVM stand for?",
+      options: ["Java Virtual Machine", "Java Variable Machine", "Java Visual Manager", "None"],
+      answer: 0
+    },
+    {
+  q: "What is the output of the following Java code?\n\nint a = 10;\nint b = a++ + ++a;\nSystem.out.println(b);",
+  options: ["21", "22", "23", "24"],
+  answer: 2
+},
+{
+  q: "Which of these is a valid way to create a thread in Java?",
+  options: [
+    "Extending the Runnable class",
+    "Implementing the Thread interface",
+    "Extending the Thread class or implementing Runnable interface",
+    "Calling the run() method directly"
+  ],
+  answer: 2
+},
+{
+  q: "What is the output?\n\nString str = null;\nif (str instanceof String)\n    System.out.println(\"True\");\nelse\n    System.out.println(\"False\");",
+  options: ["True", "False", "Compile Error", "Runtime Exception"],
+  answer: 1
+},
+{
+  q: "Which of these collections guarantees no duplicate elements and maintains insertion order?",
+  options: ["HashSet", "TreeSet", "LinkedHashSet", "ArrayList"],
+  answer: 2
+},
+{
+  q: "What is the output of the code below?\n\nString s1 = \"Java\";\nString s2 = new String(\"Java\");\nSystem.out.println(s1 == s2);",
+  options: ["true", "false", "null", "compile error"],
+  answer: 1
+},
+{
+  q: "Which method is called first during Java program execution?",
+  options: ["main()", "static block", "constructor", "finalize()"],
+  answer: 1
+},
+{
+  q: "Which of the following correctly describes Java’s memory model?",
+  options: [
+    "Stack and Heap only",
+    "Stack, Heap, and Queue",
+    "Heap, Stack, Method Area, and PC Registers",
+    "RAM and Cache"
+  ],
+  answer: 2
+},
+{
+  q: "What is the output?\n\nint i = 0;\ni = i++ + ++i;\nSystem.out.println(i);",
+  options: ["1", "2", "3", "4"],
+  answer: 2
+},
+{
+  q: "Which design pattern ensures a class has only one instance and provides global access?",
+  options: ["Factory", "Builder", "Singleton", "Prototype"],
+  answer: 2
+},
+{
+  q: "Which Java feature allows methods to behave differently based on the object that invokes them?",
+  options: ["Encapsulation", "Abstraction", "Polymorphism", "Inheritance"],
+  answer: 2
+}
 
-    const intermediateQuestions = [
-      { q: "Which data structure is used by HashMap internally?", options: ["ArrayList", "TreeSet", "Hash table", "LinkedList"], answer: 2 },
-      { q: "Which of the following allows sorted elements in ascending order?", options: ["HashSet", "LinkedHashSet", "TreeSet", "ArrayList"], answer: 2 },
-      { q: "What is the use of Comparator in Java?", options: ["To check type safety", "To compare strings only", "To compare objects with custom logic", "To sort arrays only"], answer: 2 },
-      { q: "Which of these is a checked exception?", options: ["ArithmeticException", "NullPointerException", "IOException", "ArrayIndexOutOfBoundsException"], answer: 2 },
-      { q: "What is the output of indexOf() in 'java'?", options: ["1", "2", "3", "-1"], answer: 1 },
-      { q: "What is a shallow copy in Java?", options: ["Clones object completely", "Copies only primitive data", "Copies references only", "Deep copy with memory sharing"], answer: 2 },
-      { q: "Which class is used to write data to a file in Java?", options: ["File", "Scanner", "FileWriter", "StringWriter"], answer: 2 }
-    ];
+    
+  ]; 
 
-    const advancedQuestions = [
-      { q: "What is the initial state of a newly created thread?", options: ["Running", "Waiting", "Ready", "New"], answer: 3 },
-      { q: "What does synchronized do in Java?", options: ["Runs thread in background", "Ensures only one thread accesses a block", "Speeds up thread", "Makes method final"], answer: 1 },
-      { q: "Which concept is best suited for payment gateway system?", options: ["Inheritance", "Interface", "Static class", "Local class"], answer: 1 },
-      { q: "Which tool is used to find memory leaks in Java?", options: ["Debugger", "VisualVM", "Notepad++", "Logcat"], answer: 1 },
-      { q: "In Producer-Consumer, what is used for thread communication?", options: ["this", "notify(), wait()", "main()", "System.out"], answer: 1 },
-      { q: "Which class would you use to implement an LRU cache?", options: ["ArrayList", "TreeMap", "HashMap", "LinkedHashMap"], answer: 3 }
-    ];
+    let current = 0, score = 0;
+    const container = document.getElementById("quiz-container");
+    const timer = document.getElementById("timer");
+    let timeLeft = 15 * 60;
 
-    let currentSet = basicQuestions;
-    let currentLevel = "basic";
-
-    function loadQuestions() {
-      const form = document.getElementById("quiz-form");
-      form.innerHTML = "";
-      currentSet.forEach((item, i) => {
-        let html = `<div class='question'><h3>Q${i + 1}: ${item.q}</h3>`;
-        item.options.forEach((opt, j) => {
-          html += `<div class='options'><label><input type='radio' name='q${i}' value='${j}'> ${opt}</label></div>`;
-        });
-        html += `</div>`;
-        form.innerHTML += html;
-      });
-    }
-
-    function submitQuiz() {
-      let correct = 0;
-      const form = document.getElementById("quiz-form");
-      currentSet.forEach((q, i) => {
-        const answer = form[`q${i}`].value;
-        if (parseInt(answer) === q.answer) correct++;
-      });
-      document.getElementById("result").innerHTML = `<h2>Score: ${correct}/${currentSet.length}</h2>`;
-
-      if (currentLevel === "basic") {
-        document.getElementById("overlay").style.display = "block";
-        document.getElementById("popup").style.display = "block";
-      }
-    }
-
-    function loadIntermediate() {
-      currentSet = intermediateQuestions;
-      currentLevel = "intermediate";
-      document.getElementById("overlay").style.display = "none";
-      document.getElementById("popup").style.display = "none";
-      loadQuestions();
-      document.getElementById("result").innerHTML = "";
-    }
-
-    // Timer
-    let totalTime = 15 * 60;
-    const timerInterval = setInterval(() => {
-      if (totalTime <= 0) {
-        clearInterval(timerInterval);
-        alert("Time's up! Submitting your quiz.");
-        submitQuiz();
+    function updateTimer() {
+      let minutes = Math.floor(timeLeft / 60);
+      let seconds = timeLeft % 60;
+      timer.textContent = `Time Left: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+      if (timeLeft <= 0) {
+        showResult();
       } else {
-        totalTime--;
-        let minutes = Math.floor(totalTime / 60);
-        let seconds = totalTime % 60;
-        document.getElementById("time").textContent = `${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
+        timeLeft--;
+        setTimeout(updateTimer, 1000);
       }
-    }, 1000);
+    }
 
-    window.onload = loadQuestions;
+    function showQuestion() {
+      if (current >= questions.length) {
+        showResult();
+        return;
+      }
+      const q = questions[current];
+      const options = q.options.map((opt, idx) => `
+        <label><input type="radio" name="option" value="${idx}" /> ${opt}</label>
+      `).join('');
+
+      container.innerHTML = `
+        <div class="question-set active">
+          <p><strong>Q${current + 1}:</strong> ${q.q}</p>
+          ${options}
+          <button onclick="next()">Next</button>
+        </div>
+      `;
+    }
+
+    function showResult() {
+      container.style.display = "none";
+      document.getElementById("result").classList.add("active");
+      document.getElementById("score").innerText = score;
+    }
+
+    function next() {
+      const selected = document.querySelector('input[name="option"]:checked');
+      if (selected && parseInt(selected.value) === questions[current].answer) score++;
+      current++;
+      showQuestion();
+    }
+
+    showQuestion();
+    updateTimer();
   </script>
 </body>
 </html>
