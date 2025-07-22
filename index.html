@@ -3,313 +3,237 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Java Quiz - BG Career</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <title>Technical Quiz</title>
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
+
     body {
-      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      background: #0f172a;
       color: white;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
-      min-height: 100vh;
       padding: 20px;
     }
-    .logo-container {
+
+    header {
       display: flex;
-      flex-direction: column;
       align-items: center;
+      gap: 15px;
       margin-bottom: 20px;
     }
-    .logo-container img {
-      width: 70px;
-      height: 70px;
+
+    header img {
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
       object-fit: cover;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-      transition: transform 0.3s ease;
     }
-    .logo-container img:hover {
-      transform: scale(1.05);
-    }
-    .logo-container span {
-      margin-top: 6px;
-      font-size: 16px;
-      color: #ffffff;
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
-    }
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-    #quiz-container {
-      width: 100%;
-      max-width: 600px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    .question-set {
-      display: none;
-      width: 100%;
-      background: rgba(255, 255, 255, 0.05);
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.2);
-      text-align: center;
-    }
-    .question-set.active {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .question-set p {
-      font-size: 20px;
-      margin-bottom: 16px;
-    }
-    .question-set label {
-      display: block;
-      width: 100%;
-      max-width: 500px;
-      margin: 8px auto;
-      cursor: pointer;
-      text-align: left;
-      background: rgba(255,255,255,0.1);
-      padding: 10px;
-      border-radius: 6px;
-      transition: background-color 0.2s;
-    }
-    .question-set label:hover {
-      background-color: rgba(255,255,255,0.2);
-    }
-    button {
-      padding: 10px 20px;
-      background-color: #1abc9c;
-      border: none;
+
+    header h1 {
+      font-size: 1.5rem;
       color: white;
-      font-size: 16px;
-      cursor: pointer;
-      border-radius: 8px;
+    }
+
+    .quiz-container {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 15px;
+      width: 100%;
+      max-width: 700px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .question {
+      font-size: 1.2rem;
+      text-align: center;
+    }
+
+    .code-editor {
       margin-top: 10px;
     }
-    button:hover {
-      background-color: #16a085;
+
+    textarea {
+      width: 100%;
+      height: 150px;
+      padding: 10px;
+      font-family: monospace;
+      font-size: 1rem;
+      background-color: #0f172a;
+      color: white;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      resize: vertical;
     }
-    #timer {
-      font-size: 18px;
-      margin-bottom: 20px;
-      font-weight: bold;
-      color: #ffcc00;
+
+    iframe {
+      background-color: white;
+      width: 100%;
+      height: 150px;
+      margin-top: 10px;
+      border-radius: 10px;
+      border: none;
+    }
+
+    .btn {
+      background: #2563eb;
+      padding: 10px 20px;
+      border: none;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1rem;
+      align-self: flex-end;
+    }
+
+    .btn:hover {
+      background: #1d4ed8;
+    }
+
+    .timer {
+      font-size: 1.2rem;
+      text-align: right;
+    }
+
+    .thank-you {
       text-align: center;
+      font-size: 1.4rem;
+      display: none;
     }
+
     @media (max-width: 768px) {
-      body {
-        padding: 10px;
+      .quiz-container {
+        padding: 15px;
       }
-      h1 {
-        font-size: 1.5rem;
-      }
-      .question-set p {
-        font-size: 16px;
-      }
-      .question-set label {
-        font-size: 14px;
-      }
-      button {
-        width: 100%;
-        max-width: 300px;
+
+      textarea {
+        height: 120px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="logo-container">
-    <img src="WhatsApp Image 2025-07-18 at 18.38.39_2f122030.jpg" alt="BG Career Logo" />
-    <span>Technical Department</span>
-  </div>
-  <h1>Java Quiz - BG Career</h1>
-  <div id="timer">Time Left: 15:00</div>
-  <div id="quiz-container"></div>
-  <div id="result" class="question-set">
-    <h2>Your Score: <span id="score"></span>/20</h2>
-  </div>
+  <header>
+    <img src="WhatsApp Image 2025-07-18 at 18.38.39_2f122030.jpg" alt="Logo" />
+    <h1>Technical Department</h1>
+  </header>
+
+  <div class="timer" id="timer">Time Left: 10:00</div>
+
+  <div class="quiz-container" id="quiz-box"></div>
+
+  <div class="thank-you" id="thank-you">Thank you for the test!</div>
+
   <script>
-    const questions = [{
-      q: "What will be the output of the following Java code?\nint x = 5;\nSystem.out.println(x++ + ++x);",
-      options: ["11", "12", "13", "14"],
-      answer: 2
-    },
-    {
-      q: "Which data structure does HashMap implement internally?",
-      options: ["Array", "LinkedList", "Hash table", "Binary Tree"],
-      answer: 2
-    },
-    {
-      q: "Which keyword is used for inheritance in Java?",
-      options: ["inherits", "extends", "implements", "this"],
-      answer: 1
-    },
-    {
-      q: "What is the default value of a local variable in Java?",
-      options: ["null", "0", "depends on data type", "No default value"],
-      answer: 3
-    },
-    {
-      q: "Which exception is thrown when dividing by zero in Java?",
-      options: ["NullPointerException", "IOException", "ArithmeticException", "IndexOutOfBoundsException"],
-      answer: 2
-    },
-    {
-      q: "What is the output?\nString s = \"Hello\";\nSystem.out.println(s.charAt(1));",
-      options: ["H", "e", "l", "o"],
-      answer: 1
-    },
-    {
-      q: "Which collection class allows you to access elements by key?",
-      options: ["ArrayList", "TreeSet", "HashMap", "LinkedList"],
-      answer: 2
-    },
-    {
-      q: "What is the time complexity to retrieve a value in HashMap?",
-      options: ["O(n)", "O(log n)", "O(1)", "O(n log n)"],
-      answer: 2
-    },
-    {
-      q: "Which of the following is not a feature of Java?",
-      options: ["Object-oriented", "Portable", "Supports Pointers", "Platform independent"],
-      answer: 2
-    },
-    {
-      q: "What does JVM stand for?",
-      options: ["Java Virtual Machine", "Java Variable Machine", "Java Visual Manager", "None"],
-      answer: 0
-    },
-    {
-  q: "What is the output of the following Java code?\n\nint a = 10;\nint b = a++ + ++a;\nSystem.out.println(b);",
-  options: ["21", "22", "23", "24"],
-  answer: 2
-},
-{
-  q: "Which of these is a valid way to create a thread in Java?",
-  options: [
-    "Extending the Runnable class",
-    "Implementing the Thread interface",
-    "Extending the Thread class or implementing Runnable interface",
-    "Calling the run() method directly"
-  ],
-  answer: 2
-},
-{
-  q: "What is the output?\n\nString str = null;\nif (str instanceof String)\n    System.out.println(\"True\");\nelse\n    System.out.println(\"False\");",
-  options: ["True", "False", "Compile Error", "Runtime Exception"],
-  answer: 1
-},
-{
-  q: "Which of these collections guarantees no duplicate elements and maintains insertion order?",
-  options: ["HashSet", "TreeSet", "LinkedHashSet", "ArrayList"],
-  answer: 2
-},
-{
-  q: "What is the output of the code below?\n\nString s1 = \"Java\";\nString s2 = new String(\"Java\");\nSystem.out.println(s1 == s2);",
-  options: ["true", "false", "null", "compile error"],
-  answer: 1
-},
-{
-  q: "Which method is called first during Java program execution?",
-  options: ["main()", "static block", "constructor", "finalize()"],
-  answer: 1
-},
-{
-  q: "Which of the following correctly describes Java’s memory model?",
-  options: [
-    "Stack and Heap only",
-    "Stack, Heap, and Queue",
-    "Heap, Stack, Method Area, and PC Registers",
-    "RAM and Cache"
-  ],
-  answer: 2
-},
-{
-  q: "What is the output?\n\nint i = 0;\ni = i++ + ++i;\nSystem.out.println(i);",
-  options: ["1", "2", "3", "4"],
-  answer: 2
-},
-{
-  q: "Which design pattern ensures a class has only one instance and provides global access?",
-  options: ["Factory", "Builder", "Singleton", "Prototype"],
-  answer: 2
-},
-{
-  q: "Which Java feature allows methods to behave differently based on the object that invokes them?",
-  options: ["Encapsulation", "Abstraction", "Polymorphism", "Inheritance"],
-  answer: 2
-}
+    const questions = [
+      { question: "Write a Java program that prints numbers from 1 to 5 using a for loop.", type: "code", answer: "for(int i=1;i<=5;i++){System.out.println(i);}" },
+      { question: "What will be the output of this Java code?\nint x = 5;\nSystem.out.println(++x + x++);", type: "code", answer: "12" },
+      { question: "Write a program in Java to reverse a string.", type: "code", answer: "new StringBuilder(str).reverse().toString()" },
+      { question: "What will be the output of the code?\nString a = \"Hello\";\nString b = \"World\";\nSystem.out.println(a.concat(b));", type: "code", answer: "HelloWorld" },
+      { question: "Write Java code to swap two numbers without using a third variable.", type: "code", answer: "a=a+b;b=a-b;a=a-b;" },
+      { question: "Write a Java program to check if a number is prime.", type: "code", answer: "for(int i=2;i<=n/2;i++){if(n%i==0)return false;}return true;" },
+      { question: "Write a Java code to find factorial using recursion.", type: "code", answer: "if(n==0)return 1;elsereturn n*fact(n-1);" },
+      { question: "What is the output?\nint[] arr = {1, 2, 3};\nSystem.out.println(arr[1]);", type: "code", answer: "2" },
+      { question: "Write Java code to print Fibonacci series up to n terms.", type: "code", answer: "for(int i=0;i<n;i++){int temp=a;a=b;b=temp+b;}" },
+      { question: "What is the output?\nSystem.out.println(10 + 20 + \"30\" + 40);", type: "code", answer: "303040" },
+      { question: "Write a Java code to check palindrome string.", type: "code", answer: "str.equals(new StringBuilder(str).reverse().toString())" },
+      { question: "What will this print?\nSystem.out.println('A' + 1);", type: "code", answer: "66" },
+      { question: "Write Java code to sort an array using bubble sort.", type: "code", answer: "for(int i=0;i<n-1;i++)for(int j=0;j<n-i-1;j++)if(a[j]>a[j+1])swap;" },
+      { question: "What is output?\nint x = 10;\nint y = 5;\nSystem.out.println(x > y ? x : y);", type: "code", answer: "10" },
+      { question: "Write Java code to find GCD of two numbers.", type: "code", answer: "while(b!=0){int t=b;b=a%b;a=t;}return a;" },
+      { question: "Write Java code to find LCM of two numbers.", type: "code", answer: "lcm=(a*b)/gcd(a,b);" },
+      { question: "Write code for linear search in Java.", type: "code", answer: "for(int i=0;i<n;i++){if(arr[i]==x)return i;}" },
+      { question: "What will be output?\nString s=null;\nSystem.out.println(s + 1);", type: "code", answer: "null1" },
+      { question: "Write Java code to remove duplicate characters from a string.", type: "code", answer: "LinkedHashSet<Character> set = new LinkedHashSet<>();" },
+      { question: "Write Java code to count vowels in a string.", type: "code", answer: "for(char c: str.toCharArray())if('aeiouAEIOU'.indexOf(c)!=-1)count++;" },
+    ];
 
-    
-  ]; 
+    let currentIndex = 0;
+    let score = 0;
+    const totalTime = 10 * 60;
+    let timeLeft = totalTime;
+    let timerInterval;
 
-    let current = 0, score = 0;
-    const container = document.getElementById("quiz-container");
-    const timer = document.getElementById("timer");
-    let timeLeft = 15 * 60;
+    const quizBox = document.getElementById('quiz-box');
+    const timerDisplay = document.getElementById('timer');
+    const thankYou = document.getElementById('thank-you');
 
-    function updateTimer() {
-      let minutes = Math.floor(timeLeft / 60);
-      let seconds = timeLeft % 60;
-      timer.textContent = `Time Left: ${minutes}:${seconds.toString().padStart(2, '0')}`;
-      if (timeLeft <= 0) {
-        showResult();
-      } else {
-        timeLeft--;
-        setTimeout(updateTimer, 1000);
-      }
-    }
-
-    function showQuestion() {
-      if (current >= questions.length) {
-        showResult();
+    function loadQuestion() {
+      if (currentIndex >= questions.length) {
+        quizBox.style.display = 'none';
+        thankYou.innerHTML = `Thank you for the test!<br/>Your score is ${score}/${questions.length}`;
+        thankYou.style.display = 'block';
+        clearInterval(timerInterval);
         return;
       }
-      const q = questions[current];
-      const options = q.options.map((opt, idx) => `
-        <label><input type="radio" name="option" value="${idx}" /> ${opt}</label>
-      `).join('');
 
-      container.innerHTML = `
-        <div class="question-set active">
-          <p><strong>Q${current + 1}:</strong> ${q.q}</p>
-          ${options}
-          <button onclick="next()">Next</button>
-        </div>
+      const q = questions[currentIndex];
+      quizBox.innerHTML = `
+        <div class="question">Q${currentIndex + 1}: ${q.question.replace(/\n/g, '<br/>')}</div>
+        ${q.type === "code" ? `
+          <div class="code-editor">
+            <textarea id="code-input" placeholder="Write your code here..."></textarea>
+            <button class="btn" onclick="runCode()">Run Code</button>
+            <iframe id="output-frame"></iframe>
+            <button class="btn" onclick="nextQuestion()">Next</button>
+          </div>
+        ` : ''}
       `;
     }
 
-    function showResult() {
-      container.style.display = "none";
-      document.getElementById("result").classList.add("active");
-      document.getElementById("score").innerText = score;
+    function runCode() {
+      const code = document.getElementById("code-input").value;
+      const iframe = document.getElementById("output-frame");
+      const doc = iframe.contentDocument || iframe.contentWindow.document;
+      doc.open();
+      doc.write(`<script>try { ${code} } catch(e) { document.body.innerText = 'Error: ' + e.message; }<\/script>`);
+      doc.close();
     }
 
-    function next() {
-      const selected = document.querySelector('input[name="option"]:checked');
-      if (selected && parseInt(selected.value) === questions[current].answer) score++;
-      current++;
-      showQuestion();
+    function nextQuestion() {
+      const userCode = document.getElementById("code-input").value;
+      const correctAnswer = questions[currentIndex].answer.replace(/\s+/g, '');
+      const normalizedCode = userCode.replace(/\s+/g, '');
+      if (normalizedCode.includes(correctAnswer)) {
+        score++;
+      }
+
+      currentIndex++;
+      localStorage.setItem("quizIndex", currentIndex);
+      loadQuestion();
     }
 
-    showQuestion();
-    updateTimer();
+    function startTimer() {
+      timerInterval = setInterval(() => {
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          quizBox.style.display = 'none';
+          thankYou.innerHTML = `Thank you for the test!<br/>Your score is ${score}/${questions.length}`;
+          thankYou.style.display = 'block';
+        } else {
+          const minutes = Math.floor(timeLeft / 60);
+          const seconds = timeLeft % 60;
+          timerDisplay.innerText = `Time Left: ${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+          timeLeft--;
+        }
+      }, 1000);
+    }
+
+    window.onload = function () {
+      const savedIndex = parseInt(localStorage.getItem("quizIndex"));
+      if (!isNaN(savedIndex) && savedIndex < questions.length) {
+        currentIndex = savedIndex;
+      }
+      loadQuestion();
+      startTimer();
+    }
   </script>
 </body>
 </html>
