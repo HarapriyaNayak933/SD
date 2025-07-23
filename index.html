@@ -56,32 +56,6 @@
       text-align: center;
     }
 
-    .code-editor {
-      margin-top: 10px;
-    }
-
-    textarea {
-      width: 100%;
-      height: 150px;
-      padding: 10px;
-      font-family: monospace;
-      font-size: 1rem;
-      background-color: #0f172a;
-      color: white;
-      border: 1px solid #334155;
-      border-radius: 10px;
-      resize: vertical;
-    }
-
-    iframe {
-      background-color: white;
-      width: 100%;
-      height: 150px;
-      margin-top: 10px;
-      border-radius: 10px;
-      border: none;
-    }
-
     .btn {
       background: #2563eb;
       padding: 10px 20px;
@@ -112,10 +86,6 @@
       .quiz-container {
         padding: 15px;
       }
-
-      textarea {
-        height: 120px;
-      }
     }
   </style>
 </head>
@@ -133,26 +103,26 @@
 
   <script>
     const questions = [
-      { question: "Write a Java program that prints numbers from 1 to 5 using a for loop.", type: "code", answer: "for(int i=1;i<=5;i++){System.out.println(i);}" },
-      { question: "What will be the output of this Java code?\nint x = 5;\nSystem.out.println(++x + x++);", type: "code", answer: "12" },
-      { question: "Write a program in Java to reverse a string.", type: "code", answer: "new StringBuilder(str).reverse().toString()" },
-      { question: "What will be the output of the code?\nString a = \"Hello\";\nString b = \"World\";\nSystem.out.println(a.concat(b));", type: "code", answer: "HelloWorld" },
-      { question: "Write Java code to swap two numbers without using a third variable.", type: "code", answer: "a=a+b;b=a-b;a=a-b;" },
-      { question: "Write a Java program to check if a number is prime.", type: "code", answer: "for(int i=2;i<=n/2;i++){if(n%i==0)return false;}return true;" },
-      { question: "Write a Java code to find factorial using recursion.", type: "code", answer: "if(n==0)return 1;elsereturn n*fact(n-1);" },
-      { question: "What is the output?\nint[] arr = {1, 2, 3};\nSystem.out.println(arr[1]);", type: "code", answer: "2" },
-      { question: "Write Java code to print Fibonacci series up to n terms.", type: "code", answer: "for(int i=0;i<n;i++){int temp=a;a=b;b=temp+b;}" },
-      { question: "What is the output?\nSystem.out.println(10 + 20 + \"30\" + 40);", type: "code", answer: "303040" },
-      { question: "Write a Java code to check palindrome string.", type: "code", answer: "str.equals(new StringBuilder(str).reverse().toString())" },
-      { question: "What will this print?\nSystem.out.println('A' + 1);", type: "code", answer: "66" },
-      { question: "Write Java code to sort an array using bubble sort.", type: "code", answer: "for(int i=0;i<n-1;i++)for(int j=0;j<n-i-1;j++)if(a[j]>a[j+1])swap;" },
-      { question: "What is output?\nint x = 10;\nint y = 5;\nSystem.out.println(x > y ? x : y);", type: "code", answer: "10" },
-      { question: "Write Java code to find GCD of two numbers.", type: "code", answer: "while(b!=0){int t=b;b=a%b;a=t;}return a;" },
-      { question: "Write Java code to find LCM of two numbers.", type: "code", answer: "lcm=(a*b)/gcd(a,b);" },
-      { question: "Write code for linear search in Java.", type: "code", answer: "for(int i=0;i<n;i++){if(arr[i]==x)return i;}" },
-      { question: "What will be output?\nString s=null;\nSystem.out.println(s + 1);", type: "code", answer: "null1" },
-      { question: "Write Java code to remove duplicate characters from a string.", type: "code", answer: "LinkedHashSet<Character> set = new LinkedHashSet<>();" },
-      { question: "Write Java code to count vowels in a string.", type: "code", answer: "for(char c: str.toCharArray())if('aeiouAEIOU'.indexOf(c)!=-1)count++;" },
+      { question: "Which keyword is used to inherit a class in Java?", options: ["extends", "implements", "this", "super"], answer: "extends" },
+      { question: "Which of the following is not a Java feature?", options: ["Object-oriented", "Use of pointers", "Portable", "Dynamic and Extensible"], answer: "Use of pointers" },
+      { question: "Which method is the entry point of a Java program?", options: ["start()", "main()", "run()", "init()"], answer: "main()" },
+      { question: "What is the default value of a boolean variable?", options: ["true", "false", "0", "null"], answer: "false" },
+      { question: "Which class is used to take input from the user?", options: ["Scanner", "BufferedReader", "InputStream", "DataInput"], answer: "Scanner" },
+      { question: "What is Java Virtual Machine (JVM)?", options: ["Part of JDK", "Converts bytecode to machine code", "Platform dependent", "Compiler of Java"], answer: "Converts bytecode to machine code" },
+      { question: "What is the difference between JDK, JRE, and JVM?", options: ["JDK includes JRE and JVM", "JRE includes JDK", "JVM includes JRE", "All are same"], answer: "JDK includes JRE and JVM" },
+      { question: "What is Inheritance in Java?", options: ["A mechanism to achieve code reusability", "A process of hiding implementation", "Ability to take many forms", "None of the above"], answer: "A mechanism to achieve code reusability" },
+      { question: "What is Polymorphism in Java?", options: ["Code reuse", "Encapsulation", "Ability of object to take many forms", "Inheritance"], answer: "Ability of object to take many forms" },
+      { question: "Difference between Overloading and Overriding?", options: ["Compile-time vs Run-time", "Same method name and parameters", "No difference", "None"], answer: "Compile-time vs Run-time" },
+      { question: "What is a constructor in Java?", options: ["A special method to initialize object", "Used to destroy object", "Used to call superclass", "None"], answer: "A special method to initialize object" },
+      { question: "Explain try-catch block in Java.", options: ["Used to handle exceptions", "Used to define thread", "Used to define loop", "Used to declare class"], answer: "Used to handle exceptions" },
+      { question: "What is the use of 'this' keyword in Java?", options: ["Refers to current class object", "Refers to parent class", "Used to break loop", "Used for method overloading"], answer: "Refers to current class object" },
+      { question: "What is the difference between ArrayList and LinkedList?", options: ["ArrayList is faster in random access", "LinkedList is faster in insertion/deletion", "Both", "None"], answer: "Both" },
+      { question: "Explain HashMap with an example.", options: ["Stores key-value pairs", "Allows duplicate keys", "Thread-safe", "None"], answer: "Stores key-value pairs" },
+      { question: "What is the purpose of static keyword in Java?", options: ["To define class members shared by all objects", "To define object specific variables", "To inherit from class", "To override method"], answer: "To define class members shared by all objects" },
+      { question: "What is multithreading in Java?", options: ["Multiple threads executing concurrently", "Single thread execution", "Two classes running", "None"], answer: "Multiple threads executing concurrently" },
+      { question: "What is synchronization? Why is it important?", options: ["Used to control thread access to resources", "Used to sort data", "Used to connect database", "None"], answer: "Used to control thread access to resources" },
+      { question: "What is a deadlock? How to prevent it?", options: ["When two threads wait for each other", "When thread runs infinitely", "When memory leaks", "None"], answer: "When two threads wait for each other" },
+      { question: "What are Checked and Unchecked exceptions?", options: ["Checked handled at compile-time, Unchecked at runtime", "Checked handled at runtime", "Both compile-time", "Both runtime"], answer: "Checked handled at compile-time, Unchecked at runtime" }
     ];
 
     let currentIndex = 0;
@@ -176,35 +146,16 @@
 
       const q = questions[currentIndex];
       quizBox.innerHTML = `
-        <div class="question">Q${currentIndex + 1}: ${q.question.replace(/\n/g, '<br/>')}</div>
-        ${q.type === "code" ? `
-          <div class="code-editor">
-            <textarea id="code-input" placeholder="Write your code here..."></textarea>
-            <button class="btn" onclick="runCode()">Run Code</button>
-            <iframe id="output-frame"></iframe>
-            <button class="btn" onclick="nextQuestion()">Next</button>
-          </div>
-        ` : ''}
+        <div class="question">Q${currentIndex + 1}: ${q.question}</div>
+        ${q.options.map((opt, i) => `<div><input type="radio" name="answer" value="${opt}" id="opt${i}"><label for="opt${i}"> ${opt}</label></div>`).join('')}
+        <button class="btn" onclick="nextQuestion()">Next</button>
       `;
     }
 
-    function runCode() {
-      const code = document.getElementById("code-input").value;
-      const iframe = document.getElementById("output-frame");
-      const doc = iframe.contentDocument || iframe.contentWindow.document;
-      doc.open();
-      doc.write(`<script>try { ${code} } catch(e) { document.body.innerText = 'Error: ' + e.message; }<\/script>`);
-      doc.close();
-    }
-
     function nextQuestion() {
-      const userCode = document.getElementById("code-input").value;
-      const correctAnswer = questions[currentIndex].answer.replace(/\s+/g, '');
-      const normalizedCode = userCode.replace(/\s+/g, '');
-      if (normalizedCode.includes(correctAnswer)) {
-        score++;
-      }
-
+      const q = questions[currentIndex];
+      const selected = document.querySelector('input[name="answer"]:checked');
+      if (selected && selected.value === q.answer) score++;
       currentIndex++;
       localStorage.setItem("quizIndex", currentIndex);
       loadQuestion();
